@@ -81,7 +81,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
           AWS_DEFAULT_REGION: ca-central-1
 
-        uses: appleboy/ssh@action@master
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ env.SERVER_PUBLIC_IP }}
           username: ubuntu
