@@ -14,6 +14,15 @@ provider "aws" {
     region = "ca-central-1"
 
 }
+
+resource "aws_ecr_repository" "example_node_app" {
+  name = "example-node-app"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+}
+
 resource "aws_instance" "server" {
     ami                     = "ami-0c08b0f4f9d446eaa"
     instance_type           = "t2.micro"
