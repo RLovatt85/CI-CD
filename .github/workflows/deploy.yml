@@ -17,7 +17,7 @@ jobs:
   deploy-infra:
     runs-on: ubuntu-latest
     outputs:
-      SERVER_PUBLIC_IP: ${{ steps.set-ip.outputs.instance_public_ip}}
+      SERVER_PUBLIC_IP: ${{ steps.set-ip.outputs.instance_public_ip }}
 
     steps:
       - name: Checkout
@@ -55,7 +55,7 @@ jobs:
         id: set-ip
         working-directory: ./terraform
         run: |
-          echo "instance_public_ip=$(terraform output instance_public_ip)" >> "$GITHUB-OUTPUT"
+          echo "instance_public_ip=$(terraform output -raw instance_public_ip)" >> "$GITHUB_OUTPUT"
 
   deploy-app:
     runs-on: ubuntu-latest
@@ -68,7 +68,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Set IP to env variable
-        run: echo SERVER_PUBLIC_IP=${{ needs.deploy-infra.outputs.SERVER_PUBLIC_IP }} >> $GITHUB_ENV
+        run: |
+          echo SERVER_PUBLIC_IP=${{ needs.deploy-infra.outputs.SERVER_PUBLIC_IP }} >> $GITHUB_ENV
       - name: Login to AWS ECR
         uses: aws-actions/amazon-ecr-login@v1
       - name: Build, push docker image
